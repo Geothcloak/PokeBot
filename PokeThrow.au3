@@ -8,7 +8,8 @@ Const $rattataColor = 0xA67EA9
 
 $loopflag = 1
 $searchflag = 1
-
+Const $POKEMONCAUGHTBUTTONCOLOR = 0x4AD1A3
+Const $BATTLECANERABUTTONCOLOR = 0x228899
 ;HotKeySet("{F1}", "ThrowWeedle")
 ;check if i can run ... Run ... otherwise click green button then x to accept pokemon.
 
@@ -21,6 +22,12 @@ HotKeySet("{F4}", "SearchRattata")
 
 ;wait when script firsts starts so i can focus on window
 sleep(4000)
+HotKeySet("{F5}", "CatchPokemon")
+
+HotKeySet("{F12}", "_Exit")
+;click
+;drag
+;release
 while(1)
    If $loopflag == 0 Then ExitLoop 5
    while($searchflag ==1)
@@ -109,7 +116,66 @@ Func CheckForPopup()
    EndIf
 EndFunc
 
+Func CatchPokemon()
+	  ;search for pokeball to know when battle starts
+	  $notCaught = true;
+	  while ($notCaught)
+		 $battleNotStarted = True
+		 While ($battleNotStarted)
+			PixelSearch(1060,860,1160,870,$BATTLECANERABUTTONCOLOR,0)
+			if NOT (@error) Then
+			   MouseMove(960,780)
+			   MouseDown($MOUSE_CLICK_LEFT)
+			   ;MsgBox(0,"battle start", "battle start", 1)
+			   $battleNotStarted = false
+			EndIf
+			Sleep(10)
+		 WEnd
 
+		 ; throw ball correct distance
+		 ;wait for perfect Time
+		 Sleep(1000)
+		 MouseUp($MOUSE_CLICK_LEFT)
+		 Sleep(150)
+		 ;TEMPORARY HARDCODED VALUE FOR TEST NEEDS TO DETERMINE DISTANCE
+
+		 ThrowBall(16)
+
+		 ; check for success or failure
+		 Sleep(1000)
+		 While (True)
+			;check for the pokeball that signals a pokemon got out
+			PixelSearch(1060,860,1160,870,$BATTLECANERABUTTONCOLOR,0)
+			if NOT (@error) Then
+			   ; leads to loop repeating
+			   MsgBox(0,"pokemon excaped", "catch failed", 1)
+			   ExitLoop
+			EndIf
+
+			; check for the button on the caught pokemon screen
+			PixelSearch(1060,700,1140,760,$POKEMONCAUGHTBUTTONCOLOR,1)
+			if NOT (@error) Then
+			   $notCaught = false
+			   MsgBox(0,"pokemon caught", "we got him",1)
+			   ExitLoop
+			EndIf
+
+			;wait and then repeat
+			Sleep(100)
+		 WEnd
+	  WEnd
+	  ;handle pokemon transfer or save
+EndFunc
+
+
+Func ThrowWeedle()
+   Throwball(16)
+EndFunc
+
+
+Func _Exit()
+    Exit 0
+EndFunc
 
 
 
