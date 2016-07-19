@@ -21,12 +21,12 @@ HotKeySet("{F1}", "LoopFlagFalse")
 HotKeySet("{F2}", "SearchPidgie")
 HotKeySet("{F3}", "SearchWeedle")
 HotKeySet("{F4}", "SearchRattata")
-
-;wait when script firsts starts so i can focus on window
-sleep(4000)
 HotKeySet("{F5}", "CatchPokemon")
 
 HotKeySet("{F12}", "_Exit")
+;wait when script firsts starts so i can focus on window
+sleep(4000)
+
 ;click
 ;drag
 ;release
@@ -57,6 +57,7 @@ EndFunc
 Func SearchPidgie()
    Search($pidgieColor,$pidgieSpeed)
 EndFunc
+
 Func SearchWeedle()
   ; MsgBox(0,"k","inside weedle flag", 1)
    Search($weedleColor,$weedleSpeed)
@@ -73,8 +74,8 @@ Func Search($color,$speed)
 	  if NOT(@error) Then
 		 $searchflag = 0
 		 MouseClick("left",$pixels[0],$pixels[1],1,1)
-		 Sleep(8000)
-		 ThrowBall($speed)
+		 CatchPokemon($speed)
+		 $searchflag = 1
 	  EndIf
   ; Next
 
@@ -89,9 +90,11 @@ Func ThrowBall($str)
  	  $y -= $str
    Next
    MouseUp($MOUSE_CLICK_LEFT)
-   RunOrKeep()
+   ;RunOrKeep()
 EndFunc
 
+
+; depreciated
 Func RunOrKeep()
    Sleep(14000)
    ;check if caught
