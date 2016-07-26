@@ -6,8 +6,6 @@ Const $pidgieColor = 0xE6AB54
 Const $rattataSpeed = 16
 Const $rattataColor = 0xA67EA9
 
-$loopflag = 1
-$searchflag = 1
 
 Const $POKEMONCAUGHTBUTTONCOLOR = 0x4AD1A3
 Const $BATTLECANERABUTTONCOLOR = 0x228899
@@ -16,14 +14,14 @@ const $POKEMONCHECKBOXBUTTON = 0x1C8796
 ;check if i can run ... Run ... otherwise click green button then x to accept pokemon.
 
 ;F1 to break out of script
-HotKeySet("{F1}", "LoopFlagFalse")
+HotKeySet("{F1}", "myExit")
 
 HotKeySet("{F2}", "SearchPidgie")
 HotKeySet("{F3}", "SearchWeedle")
 HotKeySet("{F4}", "SearchRattata")
 HotKeySet("{F5}", "CatchPokemon")
 
-HotKeySet("{F12}", "_Exit")
+
 ;wait when script firsts starts so i can focus on window
 sleep(4000)
 
@@ -31,19 +29,14 @@ sleep(4000)
 ;drag
 ;release
 while(1)
-   If $loopflag == 0 Then ExitLoop 5
-   while($searchflag ==1)
-	  If $loopflag == 0 Then
-		 ExitLoop 5
-		 $searchflag = 0
-	  EndIf
+
 	  SearchWeedle()
 	  sleep(500)
 	  SearchRattata()
 	  sleep(500)
 	  SearchPidgie()
 	  sleep(500)
-   WEnd
+
 
 
 WEnd
@@ -124,7 +117,7 @@ EndFunc
 Func CatchPokemon($throwStrength)
 	  ;search for pokeball to know when battle starts
 	  $notCaught = true
-	  $attempts = 3
+	  $attempts = 1
 	  while ($notCaught And $attempts > 0)
 		 $battleNotStarted = True
 
@@ -210,8 +203,9 @@ Func ThrowWeedle()
 EndFunc
 
 
-Func _Exit()
-    Exit 0
+Func myExit()
+   msgbox(0,"Exiting", "Bot is quitting")
+   exit
 EndFunc
 
 
