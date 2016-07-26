@@ -67,7 +67,8 @@ Func Search($color,$speed)
 	  if NOT(@error) Then
 		 $searchflag = 0
 		 MouseClick("left",$pixels[0],$pixels[1],1,1)
-		 CatchPokemon($speed)
+		 ;second argument change based on pokemon type
+		 CatchPokemon($speed, 1)
 		 $searchflag = 1
 	  EndIf
   ; Next
@@ -114,13 +115,15 @@ Func CheckForPopup()
    EndIf
 EndFunc
 
-Func CatchPokemon($throwStrength)
+Func CatchPokemon($throwStrengt, $attempts)
 	  ;search for pokeball to know when battle starts
 	  $notCaught = true
 	  $attempts = 1
+
 	  while ($notCaught And $attempts > 0)
 		 $battleNotStarted = True
 
+		 $timeoutCounter = 0
 		 While ($battleNotStarted )
 			PixelSearch(1060,860,1160,870,$BATTLECANERABUTTONCOLOR,0)
 			if NOT (@error) Then
@@ -130,6 +133,10 @@ Func CatchPokemon($throwStrength)
 			   $battleNotStarted = false
 			EndIf
 			Sleep(10)
+			$timeoutCounter += 10;
+			if ($timeoutCounter > 15000) Then
+			   Return
+			EndIf
 		 WEnd
 
 
