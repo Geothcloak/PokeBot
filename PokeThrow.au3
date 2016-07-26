@@ -129,6 +129,7 @@ Func CatchPokemon($throwStrengt, $attempts)
 	  while ($notCaught And $attempts > 0)
 		 $battleNotStarted = True
 
+		 $timeoutCounter = 0
 		 While ($battleNotStarted )
 			PixelSearch(1060,860,1160,870,$BATTLECANERABUTTONCOLOR,0)
 			if NOT (@error) Then
@@ -138,6 +139,10 @@ Func CatchPokemon($throwStrengt, $attempts)
 			   $battleNotStarted = false
 			EndIf
 			Sleep(10)
+			$timeoutCounter += 10;
+			if ($timeoutCounter > 15000) Then
+			   Return
+			EndIf
 		 WEnd
 
 
